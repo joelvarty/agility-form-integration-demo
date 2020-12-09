@@ -6,10 +6,18 @@ import { PrimaryButton } from "components/misc/Buttons.js";
 import { Container, ContentWithPaddingLg } from "components/misc/Layouts";
 
 const TypeFormForm = ({ customData, fields, page}) => {
-console.log({fields})
+
+
+	const typeFormStr = fields.typeForm
+	if (! typeFormStr || typeFormStr === "") return null
+
+	const typeFormObj = JSON.parse(typeFormStr)
+
+	const url = `https://form.typeform.com/to/${typeFormObj.id}`
 	const height = parseInt(fields.embeddedFormHeight) || 500
 	const formType= fields.formType || "embed"
 	const buttonText = fields.buttonText || "Start"
+
 
 	let typeFormPopup = null
 
@@ -21,7 +29,7 @@ console.log({fields})
 
 			const typeformEmbed = (await import('@typeform/embed'))
 
-			const url = "https://form.typeform.com/to/tMfV3TAD"
+
 			const options = {
 				hideHeaders: true,
 				hideFooter: true,
