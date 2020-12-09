@@ -6,10 +6,10 @@ var ChooseTypeFormCustomField = function () {
 	var self = this;
 
 	/// <field name="Label" type="String">The display name of the Custom Field Type</field>
-	self.Label = "Choose Form";
+	self.Label = "TypeForm Form";
 
 	/// <field name="ReferenceName" type="String">The internal reference name of the Custom Field Type. Must not contain any special characters.</field>
-	self.ReferenceName = "ChooseTypeForm";
+	self.ReferenceName = "TypeFormForm";
 
 	/// <field name="Render" type="Function">This function runs every time the field is rendered</field>
 	self.Render = function (options) {
