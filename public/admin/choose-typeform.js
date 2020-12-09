@@ -100,8 +100,8 @@ var ChooseTypeFormCustomField = function () {
 					},
 
 					ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-						//url: "https://agility-form-integration-demo.vercel.app/api/get-forms",
-						url: "http://localhost:3000/api/get-forms",
+						url: "https://agility-form-integration-demo.vercel.app/api/get-forms",
+						//url: "http://localhost:3000/api/get-forms",
 						dataType: 'json',
 						type: "get",
 						quietMillis: 150,
