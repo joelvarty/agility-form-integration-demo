@@ -32,15 +32,15 @@ export async function getAgilityPageProps({ context, res }) {
 	});
 
 
-	//always sync to get latest
-
-	console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
-	if (! agilitySyncClient) {
-		console.log("Agility CMS => Sync client could not be accessed.")
-		return {notFound: true};
+	//always sync to get latest UNLESS DEVELOPMENT MODE
+	if (!isDevelopmentMode) {
+		console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
+		if (! agilitySyncClient) {
+			console.log("Agility CMS => Sync client could not be accessed.")
+			return {notFound: true};
+		}
+		await agilitySyncClient.runSync();
 	}
-	await agilitySyncClient.runSync();
-
 
 
 	console.log(`Agility CMS => Getting page props for '${path}'...`);
@@ -179,13 +179,15 @@ export async function getAgilityPaths() {
 		isDevelopmentMode
 	});
 
-	//always sync to get latest
-	console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
-	if (! agilitySyncClient) {
-		console.log("Agility CMS => Sync client could not be accessed.")
-		return [];
+	if (!isDevelopmentMode) {
+		//always sync to get latest UNLESS DEVELOPMENT MODE
+		console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
+		if (! agilitySyncClient) {
+			console.log("Agility CMS => Sync client could not be accessed.")
+			return [];
+		}
+		await agilitySyncClient.runSync();
 	}
-	await agilitySyncClient.runSync();
 
 
 	const sitemapFlat = await agilitySyncClient.store.getSitemap({
