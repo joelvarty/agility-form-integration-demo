@@ -34,7 +34,7 @@ function Layout(props) {
 	return (
 		<>
 			<Head>
-				<title>{sitemapNode?.title} - Agility CMS Sample Blog</title>
+				<title>{sitemapNode?.title} - Forms Integration Demo</title>
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
 				<meta name="description" content={page.seo.metaDescription} />
 				<meta name="generator" content="Agility CMS" />
