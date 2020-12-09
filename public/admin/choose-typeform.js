@@ -61,11 +61,11 @@ var ChooseTypeFormCustomField = function () {
 
 				self.formatResult = function (item) {
 
-					return item.node.title;
+					return item.title;
 				};
 
 				self.formatSelection = function (item) {
-					return item.node.title;
+					return item.title;
 
 				};
 				self.ajaxRequest = null;
@@ -96,11 +96,11 @@ var ChooseTypeFormCustomField = function () {
 						//etc...
 
 						//save the whole thing as JSON
-						return JSON.stringify(obj.node)
+						return JSON.stringify(obj)
 					},
 
 					ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-						url: "https://sample-swag-shopify.vercel.app/api/search-products",
+						//url: "https://agility-form-integration-demo.vercel.app/api/get-forms",
 						url: "http://localhost:3000/api/get-forms",
 						dataType: 'json',
 						type: "get",
@@ -115,8 +115,13 @@ var ChooseTypeFormCustomField = function () {
 						},
 						results: function (data, page) {
 
+							let items = []
+							if (data && data.items) {
+								items = data.items
+							}
+
 							return {
-								results: data
+								results: items
 							};
 						},
 						current: function (data) {
@@ -131,8 +136,8 @@ var ChooseTypeFormCustomField = function () {
 						if (json && json.length > 0) {
 
 							var node = JSON.parse(json)
-							console.log({node})
-							callback({node})
+							console.log(node)
+							callback(node)
 						}
 
 

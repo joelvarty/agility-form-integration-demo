@@ -6,10 +6,10 @@ import { PrimaryButton } from "components/misc/Buttons.js";
 import { Container, ContentWithPaddingLg } from "components/misc/Layouts";
 
 const TypeFormForm = ({ customData, fields, page}) => {
-
-	const height = 500
-	const formType="widgetX"
-	const buttonText = "Start"
+console.log({fields})
+	const height = parseInt(fields.embeddedFormHeight) || 500
+	const formType= fields.formType || "embed"
+	const buttonText = fields.buttonText || "Start"
 
 	let typeFormPopup = null
 
@@ -29,7 +29,7 @@ const TypeFormForm = ({ customData, fields, page}) => {
 				buttonText,
 			}
 
-			if (formType === "widget") {
+			if (formType === "embed") {
 				const element = document.getElementById("TypeformEmbed")
 				typeformEmbed.makeWidget(element, url, options)
 			} else {
@@ -46,7 +46,7 @@ const TypeFormForm = ({ customData, fields, page}) => {
 		typeFormPopup.open()
 	}
 
-	if (formType === "widget") {
+	if (formType === "embed") {
 		return (
 			<section>
 				<div id="TypeformEmbed" style={{height: `${height}px`}}></div>
