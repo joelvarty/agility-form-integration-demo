@@ -9,7 +9,8 @@ require("dotenv").config({
 })
 
 const { getSyncClient } = require('./agility.config')
-
+const Mutex = require('./agility.sync.mutex')
+const mutex = new Mutex("agility-sync")
 
 const runSync = async () => {
 
@@ -18,7 +19,13 @@ const runSync = async () => {
 		console.log("Agility CMS => Sync client could not be accessed.")
 		return;
 	}
-	await agilitySyncClient.runSync();
+	//only allow 1 sync to happen at a time
+	mutex.waitLock()
+	try {
+		await agilitySyncClient.runSync();
+	} finally {
+		mutex.unlock()
+	}
 }
 
 const clearSync = async () => {
