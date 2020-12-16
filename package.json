@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@agility/content-fetch": "^1.0.0",
 		"@agility/content-sync": "^0.1.20",
+		"@babel/core": "^7.12.10",
 		"@tailwindcss/typography": "^0.2.0",
 		"@typeform/embed": "^0.30.0",
 		"axios": "^0.21.0",

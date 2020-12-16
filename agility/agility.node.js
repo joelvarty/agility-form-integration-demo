@@ -6,6 +6,9 @@ import GlobalHeader from 'components/agility-global/GlobalHeader'
 import { agilityConfig, getSyncClient } from './agility.config'
 import GlobalFooter from 'components/agility-global/GlobalFooter'
 
+const Mutex = require('./agility.sync.mutex')
+const mutex = new Mutex("agility-sync")
+
 const securityKey = agilityConfig.securityKey
 const channelName = agilityConfig.channelName
 const languageCode = agilityConfig.languageCode
@@ -39,7 +42,15 @@ export async function getAgilityPageProps({ context, res }) {
 			console.log("Agility CMS => Sync client could not be accessed.")
 			return {notFound: true};
 		}
-		await agilitySyncClient.runSync();
+
+		//only allow 1 sync to happen at a time
+		mutex.waitLock()
+		try {
+			await agilitySyncClient.runSync();
+		} finally {
+			mutex.unlock()
+		}
+
 	}
 
 
@@ -186,7 +197,13 @@ export async function getAgilityPaths() {
 			console.log("Agility CMS => Sync client could not be accessed.")
 			return [];
 		}
-		await agilitySyncClient.runSync();
+		//only allow 1 sync to happen at a time
+		mutex.waitLock()
+		try {
+			await agilitySyncClient.runSync();
+		} finally {
+			mutex.unlock()
+		}
 	}
 
 
