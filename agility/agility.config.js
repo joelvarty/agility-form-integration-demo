@@ -17,7 +17,7 @@ const getSyncClient = ({ isPreview, isDevelopmentMode }) => {
 
 	if (!isDevelopmentMode) {
 		//we are in prod and need to use a different directory that Vercel understands
-		cachePath = "/tmp/agilitycache"
+		cachePath = `/tmp/agilitycache/${isPreview ? 'preview' : 'live'}`
 	}
 	console.log(`Agility CMS => Content cache path is ${cachePath}`)
 	const apiKey = isPreview ? agilityConfig.previewAPIKey : agilityConfig.fetchAPIKey
