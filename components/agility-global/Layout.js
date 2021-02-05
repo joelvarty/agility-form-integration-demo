@@ -38,8 +38,7 @@ function Layout(props) {
 	}
 
 
-	const GA_TRACKING_ID = "G-PCRWL810T4"
-
+	const GA_TRACKING_ID = "UA-99380812-1"
 
 	return (
 		<>
