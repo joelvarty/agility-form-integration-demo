@@ -39,6 +39,7 @@ function Layout(props) {
 
 
 	const GA_TRACKING_ID = "UA-99380812-1"
+	const OPT_CONTAINER_ID = "OPT-5ZLJHVX"
 
 	return (
 		<>
@@ -68,6 +69,7 @@ function Layout(props) {
 						});`,
 					}}
 				/>
+				<script src={`https://www.googleoptimize.com/optimize.js?id=${OPT_CONTAINER_ID}`}></script>
 
 				{metaRawHtml}
 
