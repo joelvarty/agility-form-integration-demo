@@ -58,12 +58,12 @@ PostDetails.getCustomInitialProps = async function ({item, agility, languageCode
 
 		const post = dynamicPageItem.fields
 
-		const tagNames = post.tags?.map(t => t?.fields?.title).join(",")
+		const tagNames = post.tags?.map(t => t?.fields?.title).join(",") | ""
 		const dateStr = new Date(post.date).toLocaleString()
 		let category = null;
 		let authorName = null;
-		if (post.category?.fields) category = post.category.fields?.title
-		if (post.author?.fields) authorName = post.author.fields?.name
+		if (post.category?.fields) category = post.category?.fields?.title | ""
+		if (post.author?.fields) authorName = post.author?.fields?.name | ""
 
 
 		let imageUrl = post.image?.url;
@@ -83,6 +83,8 @@ PostDetails.getCustomInitialProps = async function ({item, agility, languageCode
 
 		if (imageUrl) {
 			dynamicPageItem.seo.ogImage =  imageUrl
+		} else {
+			imageUrl = ""
 		}
 
 		return  {

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import tw from "twin.macro"
+import ReactHtmlParser from 'react-html-parser'
 
 const MainElem = tw.main`p-8`;
 
@@ -31,6 +32,15 @@ function Layout(props) {
 		page.seo.metaDescription = dynamicPageItem.seo.metaDescription
 	}
 
+	let metaRawHtml = null
+	if (page.seo.metaHTML) {
+		metaRawHtml = ReactHtmlParser(page.seo.metaHTML)
+	}
+
+
+	const GA_TRACKING_ID = "G-WGQQFMVY4V"
+
+
 	return (
 		<>
 			<Head>
@@ -43,6 +53,24 @@ function Layout(props) {
 					<meta property="og:image" content={dynamicPageItem.seo.ogImage} />
 				}
 				<link rel="stylesheet" href="/prose.css" />
+
+				<script
+					async
+					src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+				/>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', '${GA_TRACKING_ID}', {
+							page_path: window.location.pathname,
+						});`,
+					}}
+				/>
+
+				{metaRawHtml}
 
 			</Head>
 			<PreviewBar {...props} />

@@ -3,8 +3,6 @@ const renderHTML = (html) => {
 	return { __html: cleanHTML(html) };
 }
 
-const isBrowser = () => typeof window !== "undefined"
-
 const cleanHTML = (html) => {
 	if (!html) return ""
 
@@ -106,6 +104,5 @@ module.exports = {
 	asyncForEach,
 	expandContentItem,
 	expandContentList,
-	expandLinkedList,
-	isBrowser
+	expandLinkedList
 }

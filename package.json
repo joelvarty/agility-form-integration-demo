@@ -3,15 +3,18 @@
 	"version": "0.1.1",
 	"private": true,
 	"scripts": {
+		"predev": "node agility/agility.sync.js sync",
 		"dev": "next dev",
+		"prebuild": "node agility/agility.sync.js prebuild",
 		"build": "next build",
+		"postbuild": "node agility/agility.sync.js postbuild",
 		"start": "next build && next start",
-		"cms-pull": "node agility/agility.sync.js sync",
-		"cms-clear": "node agility/agility.sync.js clear"
+		"cms-pull": "NODE_ENV=development && node framework/agility/agility.sync.js sync",
+		"cms-clear": "node agility.sync.js clear"
 	},
 	"dependencies": {
 		"@agility/content-fetch": "^1.0.0",
-		"@agility/content-sync": "^0.1.20",
+		"@agility/content-sync": "^0.1.23",
 		"@babel/core": "^7.12.10",
 		"@tailwindcss/typography": "^0.2.0",
 		"@typeform/embed": "^0.30.0",
@@ -22,6 +25,7 @@
 		"next": "^10.0.3",
 		"react": "16.13.1",
 		"react-dom": "16.13.1",
+		"react-html-parser": "^2.0.2",
 		"react-modal": "^3.11.2",
 		"react-slick": "^0.27.0",
 		"slick-carousel": "^1.8.1",
@@ -32,7 +36,7 @@
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^5.4.0",
-		"url-loader": "^4.1.0",
-		"npm-run-all": "^4.1.5"
+		"npm-run-all": "^4.1.5",
+		"url-loader": "^4.1.0"
 	}
 }

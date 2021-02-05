@@ -1,13 +1,11 @@
 import crypto from 'crypto'
 import { asyncForEach } from "./utils"
 import GlobalHeader from 'components/agility-global/GlobalHeader'
+const fs = require("fs-extra")
 
 //Agility API stuff
-import { agilityConfig, getSyncClient } from './agility.config'
+import { agilityConfig, getSyncClient, prepIncrementalMode } from './agility.config'
 import GlobalFooter from 'components/agility-global/GlobalFooter'
-
-const Mutex = require('./agility.sync.mutex')
-const mutex = new Mutex("agility-sync")
 
 const securityKey = agilityConfig.securityKey
 const channelName = agilityConfig.channelName
@@ -27,36 +25,37 @@ export async function getAgilityPageProps({ context, res }) {
 	}
 
 	//determine if we are in preview mode
-	const isPreview = (context.preview || isDevelopmentMode);
+	const preview = context.preview
+	const isPreview = (preview || isDevelopmentMode);
+
+	//determine if we've already done a full build yet
+	const buildFilePath = `${process.cwd()}/.next/cache/agility/build.log`
+	const isBuildComplete = fs.existsSync(buildFilePath)
 
 	const agilitySyncClient = getSyncClient({
 		isPreview: isPreview,
-		isDevelopmentMode
+		isDevelopmentMode,
+		isIncremental: isBuildComplete
 	});
 
 
-	//always sync to get latest UNLESS DEVELOPMENT MODE
-	if (!isDevelopmentMode) {
-		console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
-		if (! agilitySyncClient) {
-			console.log("Agility CMS => Sync client could not be accessed.")
-			return {notFound: true};
-		}
+	//always sync to get latest
 
-		//only allow 1 sync to happen at a time
-		mutex.waitLock()
-		try {
-			await agilitySyncClient.runSync();
-		} finally {
-			mutex.unlock()
-		}
-
+	console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
+	if (! agilitySyncClient) {
+		console.log("Agility CMS => Sync client could not be accessed.")
+		return {notFound: true};
 	}
 
+	if (preview || isBuildComplete) {
+		//only do on-demand sync in next's preview mode or incremental build...
+		console.log(`AgilityCMS => Sync On-demand ${isPreview ? "Preview" : "Live"} Mode`)
+
+		await prepIncrementalMode()
+		await agilitySyncClient.runSync();
+	}
 
 	console.log(`Agility CMS => Getting page props for '${path}'...`);
-
-
 
 	//get sitemap
 	const sitemap = await agilitySyncClient.store.getSitemap({ channelName, languageCode });
@@ -178,34 +177,28 @@ export async function getAgilityPageProps({ context, res }) {
 	}
 }
 
-export async function getAgilityPaths() {
+export async function getAgilityPaths(preview) {
 
 	console.log(`Agility CMS => Fetching sitemap for getAgilityPaths...`);
 
 	//determine if we are in preview mode
-	const isPreview = isDevelopmentMode;
+	const isPreview = preview || isDevelopmentMode;
+
+	//determine if we've already done a full build yet
+	const buildFilePath = `${process.cwd()}/.next/cache/agility/build.log`
+	const isBuildComplete = fs.existsSync(buildFilePath)
 
 	const agilitySyncClient = getSyncClient({
 		isPreview,
-		isDevelopmentMode
+		isDevelopmentMode,
+		isIncremental: isBuildComplete
 	});
 
-	if (!isDevelopmentMode) {
-		//always sync to get latest UNLESS DEVELOPMENT MODE
-		console.log(`Agility CMS => Syncing ${isPreview ? "Preview" : "Live"} Mode`)
-		if (! agilitySyncClient) {
-			console.log("Agility CMS => Sync client could not be accessed.")
-			return [];
-		}
-		//only allow 1 sync to happen at a time
-		mutex.waitLock()
-		try {
-			await agilitySyncClient.runSync();
-		} finally {
-			mutex.unlock()
-		}
-	}
 
+	if (! agilitySyncClient) {
+		console.log("Agility CMS => Sync client could not be accessed.")
+		return [];
+	}
 
 	const sitemapFlat = await agilitySyncClient.store.getSitemap({
 		channelName,
