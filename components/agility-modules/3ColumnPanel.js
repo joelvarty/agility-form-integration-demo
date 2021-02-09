@@ -8,8 +8,12 @@ const ThreeColumnPanel =  ({customData, fields, page}) => {
 	React.useEffect(() => {
 		gtag('event', 'optimize.callback', {
 			callback: (combination, experimentId, containerId) => {
-			console.log("loaded optimize!")
+
 			 console.log({combination, experimentId, containerId});
+			 const ret = google_optimize.get(experimentId, (cbRet) => {
+				 console.log("cbRet", cbRet)
+			 });
+			 console.log("ret", ret)
 			}
 		 });
 	}, [])
