@@ -6,16 +6,29 @@ import React from 'react'
 const ThreeColumnPanel =  ({customData, fields, page}) => {
 
 	React.useEffect(() => {
-		gtag('event', 'optimize.callback', {
-			callback: (combination, experimentId, containerId) => {
+		// gtag('event', 'optimize.callback', {
+		// 	callback: (combination, experimentId, containerId) => {
 
-			 console.log({combination, experimentId, containerId});
-			 const ret = google_optimize.get(experimentId, (cbRet) => {
-				 console.log("cbRet", cbRet)
-			 });
-			 console.log("ret", ret)
-			}
-		 });
+		// 	 console.log({combination, experimentId, containerId});
+		// 	 const ret = google_optimize.get(experimentId, (cbRet) => {
+		// 		 console.log("cbRet", cbRet)
+		// 	 });
+		// 	 console.log("ret", ret)
+		// 	}
+		//  });
+
+		if (window.dataLayer) {
+			await window.dataLayer.push({ event: "optimize.activate" });
+		  }
+
+		// 	if (window.google_optimize !== undefined) {
+		// 	  const variant = window.google_optimize.get("DRtR7BqNTv-w1vaaipidFQ");
+		// 	  this.setState({ variant });
+		// 	  clearInterval(this.intervalId);
+		// 	}
+		//   }, 100);
+
+
 	}, [])
 
 
