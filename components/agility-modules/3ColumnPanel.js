@@ -1,9 +1,18 @@
 import truncate from 'truncate-html'
 
 import ThreeColSlider from "components/cards/ThreeColSlider"
+import React from 'react'
 
 const ThreeColumnPanel =  ({customData, fields, page}) => {
 
+	React.useEffect(() => {
+		gtag('event', 'optimize.callback', {
+			callback: (combination, experimentId, containerId) => {
+			console.log("loaded optimize!")
+			 console.log({combination, experimentId, containerId});
+			}
+		 });
+	}, [])
 
 
 	// const cards = [
