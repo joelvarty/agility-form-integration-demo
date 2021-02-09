@@ -16,10 +16,15 @@ const ThreeColumnPanel =  ({customData, fields, page}) => {
 		// 	 console.log("ret", ret)
 		// 	}
 		//  });
+		if (typeof(window) === undefined) return
 
-		if (window.dataLayer) {
-			await window.dataLayer.push({ event: "optimize.activate" });
-		  }
+		const initDataLayer = async () => {
+			if (window.dataLayer) {
+				await window.dataLayer.push({ event: "optimize.activate" });
+			  }
+		}
+
+		initDataLayer()
 
 		// 	if (window.google_optimize !== undefined) {
 		// 	  const variant = window.google_optimize.get("DRtR7BqNTv-w1vaaipidFQ");
