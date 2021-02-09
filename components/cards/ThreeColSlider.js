@@ -103,7 +103,7 @@ const ThreeColSliderComponent = ({title, cards}) => {
         </HeadingWithControl>
         <CardSlider ref={setSliderRef} {...sliderSettings}>
           {cards.map((card, index) => (
-            <Card key={index} id={`card-${card.id}`} data-region-target={card.regionTarget}>
+            <Card key={index} id={`card-${card.id}`} data-elem-type="region" data-region-target={card.regionTarget}>
               <CardImage imageSrc={card.imageSrc} />
               <TextInfo>
                 <TitleReviewContainer>
