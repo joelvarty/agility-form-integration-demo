@@ -61,7 +61,6 @@ function Layout(props) {
 				if (console) console.log("Activating optimize!")
 
 				gtag('event', 'optimize.callback', {
-					name: '5ZP4dOGnSv-DqVfX34UiiA',
 					callback: (w, x, y, z) => {
 						console.log("Optimize callback!", w, x, y, z);
 					}
