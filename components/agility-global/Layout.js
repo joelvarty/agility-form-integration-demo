@@ -60,16 +60,24 @@ function Layout(props) {
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
 
-				//catch the event
-				window.dataLayer.push('event', 'optimize.callback', {
-					name: "5ZP4dOGnSv-DqVfX34UiiA",
+				gtag('event', 'optimize.callback', {
+					name: '5ZP4dOGnSv-DqVfX34UiiA',
 					callback: (w, x, y, z) => {
 						console.log("Optimize callback!", w, x, y, z);
 					}
 				 });
 
+				// //catch the event
+				// window.dataLayer.push({
+				// 	'event': 'optimize.callback', {
+				// 	name: "5ZP4dOGnSv-DqVfX34UiiA",
+				// 	callback: (w, x, y, z) => {
+				// 		console.log("Optimize callback!", w, x, y, z);
+				// 	}
+				//  });
+
 				 //initialize the experience...
-				await window.dataLayer.push({ event: "optimize.activate" });
+				window.dataLayer.push({ event: "optimize.activate" });
 
 			}
 		}
