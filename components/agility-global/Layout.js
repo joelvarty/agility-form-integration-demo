@@ -61,9 +61,10 @@ function Layout(props) {
 				if (console) console.log("Activating optimize!")
 
 				//catch the event
-				window.dataLayer.push({event: 'optimize.callback',
+				window.dataLayer.push('event', 'optimize.callback', {
+					name: "5ZP4dOGnSv-DqVfX34UiiA",
 					callback: (w, x, y, z) => {
-					 console.log("Optimize callback!", w, x, y, z);
+						console.log("Optimize callback!", w, x, y, z);
 					}
 				 });
 
