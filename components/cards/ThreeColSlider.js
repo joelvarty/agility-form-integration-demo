@@ -129,7 +129,7 @@ const ThreeColSliderComponent = ({title, cards}) => {
                 </SecondaryInfoContainer>
                 <Description>{card.description}</Description>
               </TextInfo>
-              <PrimaryButton>Book Now</PrimaryButton>
+              <PrimaryButton onClick={() => location.href = "/"}>Book Now</PrimaryButton>
             </Card>
           ))}
         </CardSlider>

@@ -31,10 +31,8 @@ const ThreeColumnPanel = ({ customData, fields, page }) => {
 
 	}, [])
 
+	return <ThreeColSlider title={customData.title} cards={cards} />
 
-	if (variant < 0) {
-		return <ThreeColSlider title={customData.title} cards={cards} />
-	}
 }
 
 
