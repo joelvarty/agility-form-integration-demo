@@ -6,11 +6,13 @@ import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import tw from "twin.macro"
 import ReactHtmlParser from 'react-html-parser'
+import { initGA, logPageView } from "utils/analytics"
 
 const MainElem = tw.main`p-8`;
 
 import AnimationRevealPage from "helpers/AnimationRevealPage"
 import Error from 'next/error'
+import React from 'react'
 
 function Layout(props) {
 	const { page, sitemapNode, dynamicPageItem, notFound } = props
@@ -37,9 +39,42 @@ function Layout(props) {
 		metaRawHtml = ReactHtmlParser(page.seo.metaHTML)
 	}
 
+	React.useEffect(() => {
+		if (typeof (window) === undefined) return
+
+		//run the optimize event...
+		const initDataLayer = async () => {
+			if (window.dataLayer) {
+				if (console) console.log("Activating optimize!")
+				await window.dataLayer.push({ event: "optimize.activate" });
+			}
+		}
+
+		const handleRouteChange = (url) => {
+			logPageView(url)
+		};
+
+		if (!window.GA_INITIALIZED) {
+			initGA()
+			window.GA_INITIALIZED = true
+		}
+
+		router.events.on("routeChangeComplete", handleRouteChange);
+
+		//init the data laye for optimize
+		initDataLayer()
+
+
+		return () => {
+			if (typeof (window) === undefined) return
+			router.events.off("routeChangeComplete", handleRouteChange);
+		};
+	}, [router.events]);
 
 	const GA_TRACKING_ID = "UA-99380812-1"
 	const OPT_CONTAINER_ID = "OPT-5ZLJHVX"
+
+
 
 	return (
 		<>
@@ -54,7 +89,7 @@ function Layout(props) {
 				}
 				<link rel="stylesheet" href="/prose.css" />
 
-				<script
+				{/* <script
 					async
 					src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
 				/>
@@ -68,7 +103,7 @@ function Layout(props) {
 							page_path: window.location.pathname,
 						});`,
 					}}
-				/>
+				/> */}
 				<script src={`https://www.googleoptimize.com/optimize.js?id=${OPT_CONTAINER_ID}`}></script>
 
 				{metaRawHtml}

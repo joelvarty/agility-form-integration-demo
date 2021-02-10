@@ -71,7 +71,7 @@ PostsListing.getCustomInitialProps = async function ({agility, channelName, lang
 			return {
 				contentID: post.contentID,
 				title: post.fields.title,
-				url: url,
+				url: url || null,
 				category: category?.fields.title || null,
 				author: author?.fields.name || null,
 				description,
