@@ -47,7 +47,7 @@ function Layout(props) {
 		if (window.gtag===undefined) {
 
 			window.gtag = function() {
-				console.log("GTAG:", arguments)
+
 				window.dataLayer.push(arguments)
 			}
 		}
@@ -55,26 +55,8 @@ function Layout(props) {
 		//run the optimize event...
 		const activateOptimize = async () => {
 
-			console.log("activate optimize")
-
 			if (window.dataLayer) {
-				if (console) console.log("Activating optimize!")
-
-				gtag('event', 'optimize.callback', {
-					callback: (w, x, y, z) => {
-						console.log("Optimize callback!", w, x, y, z);
-					}
-				 });
-
-				// //catch the event
-				// window.dataLayer.push({
-				// 	'event': 'optimize.callback', {
-				// 	name: "5ZP4dOGnSv-DqVfX34UiiA",
-				// 	callback: (w, x, y, z) => {
-				// 		console.log("Optimize callback!", w, x, y, z);
-				// 	}
-				//  });
-
+				console.log("activating optimize")
 				 //initialize the experience...
 				window.dataLayer.push({ event: "optimize.activate" });
 

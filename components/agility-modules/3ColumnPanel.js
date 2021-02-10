@@ -2,10 +2,43 @@ import truncate from 'truncate-html'
 
 import ThreeColSlider from "components/cards/ThreeColSlider"
 import React from 'react'
+import { load } from '@agility/content-sync'
 
 const ThreeColumnPanel =  ({customData, fields, page}) => {
 
 	React.useEffect(() => {
+		if (typeof (window) === undefined) return
+		const loadExperiment = () => {
+
+			if (window.google_optimize === undefined) {
+				setTimeout(loadExperiment, 50)
+				return
+			}
+
+			console.log("checking for experiments")
+			const ret = window.google_optimize.get("-sAuWoxbRZ2w8JSLlOFnbQ", (cbRet) => {
+				console.log("cbRet", cbRet)
+			});
+	  		console.log("ret", ret)
+
+			// console.log("checking for experiments")
+			// window.gtag('event', 'optimize.callback', {
+			// 	name: "-sAuWoxbRZ2w8JSLlOFnbQ",
+			// 	callback: (combination, experimentId, containerId) => {
+			// 		console.log("Optimize callback!", combination, experimentId, containerId);
+
+			// 		const ret = google_optimize.get(experimentId, (cbRet) => {
+			// 		 		 console.log("cbRet", cbRet)
+			// 		 	 });
+			// 		console.log("ret", ret)
+			// 	}
+			//  });
+		}
+
+		setTimeout(loadExperiment, 0)
+
+
+
 		// gtag('event', 'optimize.callback', {
 		// 	callback: (combination, experimentId, containerId) => {
 
