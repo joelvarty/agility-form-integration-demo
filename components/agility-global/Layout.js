@@ -76,6 +76,7 @@ function Layout(props) {
 
 		const handleRouteChange = (url) => {
 			logPageView(url)
+			initOptimize()
 		};
 
 		if (! isGaLoaded) {
