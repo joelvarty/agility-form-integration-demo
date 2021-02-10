@@ -12,7 +12,7 @@ const MainElem = tw.main`p-8`;
 
 import AnimationRevealPage from "helpers/AnimationRevealPage"
 import Error from 'next/error'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 function Layout(props) {
 	const { page, sitemapNode, dynamicPageItem, notFound } = props
@@ -20,6 +20,7 @@ function Layout(props) {
 	// If the page is not yet generated, this will be displayed
 	// initially until getStaticProps() finishes running
 	const router = useRouter()
+	const [isGaLoaded, setIsGaLoaded] = useState(false)
 	if (router.isFallback) {
 		return <div>Loading page...</div>
 	}
@@ -39,8 +40,13 @@ function Layout(props) {
 		metaRawHtml = ReactHtmlParser(page.seo.metaHTML)
 	}
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (typeof (window) === undefined) return
+
+
+		if (window.gtag===undefined) {
+			window.gtag = () => dataLayer.push(arguments)
+		}
 
 		//run the optimize event...
 		const initDataLayer = async () => {
@@ -50,13 +56,14 @@ function Layout(props) {
 			}
 		}
 
+
 		const handleRouteChange = (url) => {
 			logPageView(url)
 		};
 
-		if (!window.GA_INITIALIZED) {
+		if (! isGaLoaded) {
 			initGA()
-			window.GA_INITIALIZED = true
+			setIsGaLoaded(true)
 		}
 
 		router.events.on("routeChangeComplete", handleRouteChange);
@@ -64,6 +71,12 @@ function Layout(props) {
 		//init the data laye for optimize
 		initDataLayer()
 
+		//catch any optimize events..
+		gtag('event', 'optimize.callback', {
+			callback: (combination, experimentId, containerId, x, y, z) => {
+			 console.log("Optimize callback!", experimentId, containerId, combination, x, y, z);
+			}
+		 });
 
 		return () => {
 			if (typeof (window) === undefined) return
