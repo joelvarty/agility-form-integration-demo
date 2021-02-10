@@ -6,7 +6,7 @@ import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import tw from "twin.macro"
 import ReactHtmlParser from 'react-html-parser'
-import { initGA, logPageView } from "utils/analytics"
+import { initGA, initOptimize, logPageView } from "utils/analytics"
 
 const MainElem = tw.main`p-8`;
 
@@ -53,17 +53,17 @@ function Layout(props) {
 		}
 
 		//run the optimize event...
-		const initOptimize = async () => {
+		const activateOptimize = async () => {
 
-			console.log("init optimize")
+			console.log("activate optimize")
 
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
 
 				//catch the event
 				window.dataLayer.push({event: 'optimize.callback',
-					callback: () => {
-					 console.log("Optimize callback!", arguments);
+					callback: (w, x, y, z) => {
+					 console.log("Optimize callback!", w, x, y, z);
 					}
 				 });
 
@@ -76,17 +76,16 @@ function Layout(props) {
 
 		const handleRouteChange = (url) => {
 			logPageView(url)
-			initOptimize()
+			activateOptimize()
 		};
 
 		if (! isGaLoaded) {
 			initGA()
+			initOptimize(activateOptimize)
 			setIsGaLoaded(true)
 		}
 
 		router.events.on("routeChangeComplete", handleRouteChange);
-
-		initOptimize()
 
 		return () => {
 			if (typeof (window) === undefined) return
@@ -127,7 +126,7 @@ function Layout(props) {
 						});`,
 					}}
 				/> */}
-				<script src={`https://www.googleoptimize.com/optimize.js?id=${OPT_CONTAINER_ID}`}></script>
+				{/* <script src={`https://www.googleoptimize.com/optimize.js?id=${OPT_CONTAINER_ID}`}></script> */}
 
 				{metaRawHtml}
 
