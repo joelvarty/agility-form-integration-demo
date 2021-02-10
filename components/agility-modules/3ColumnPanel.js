@@ -55,7 +55,7 @@ ThreeColumnPanel.getCustomInitialProps = async function ({agility, item, channel
 		let cards = cardsContentList.map(c => {
 			return {
 				id: c.contentID,
-				variant: c.fields.variant,
+				variant: c.fields.variant || 0,
 				title: c.fields.title,
 				regionTarget: c.fields.regionTarget,
 				description: c.fields.description,
