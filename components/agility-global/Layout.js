@@ -54,6 +54,9 @@ function Layout(props) {
 
 		//run the optimize event...
 		const initOptimize = async () => {
+
+			console.log("init optimize")
+
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
 
