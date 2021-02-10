@@ -56,13 +56,17 @@ function Layout(props) {
 		const initOptimize = async () => {
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
-				await window.dataLayer.push({ event: "optimize.activate" });
 
+				//catcht the event
 				window.dataLayer.push('event', 'optimize.callback', {
 					callback: () => {
 					 console.log("Optimize callback!", arguments);
 					}
 				 });
+
+				 //initialize the experience...
+				await window.dataLayer.push({ event: "optimize.activate" });
+
 			}
 		}
 
