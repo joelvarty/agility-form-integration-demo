@@ -48,7 +48,7 @@ function Layout(props) {
 
 			window.gtag = function() {
 				console.log("GTAG:", arguments)
-				dataLayer.push(arguments)
+				window.dataLayer.push(arguments)
 			}
 		}
 
@@ -57,8 +57,8 @@ function Layout(props) {
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
 
-				//catcht the event
-				window.dataLayer.push('event', 'optimize.callback', {
+				//catch the event
+				window.dataLayer.push({event: 'optimize.callback',
 					callback: () => {
 					 console.log("Optimize callback!", arguments);
 					}
