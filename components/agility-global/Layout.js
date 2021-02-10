@@ -45,14 +45,24 @@ function Layout(props) {
 
 
 		if (window.gtag===undefined) {
-			window.gtag = () => dataLayer.push(arguments)
+
+			window.gtag = function() {
+				console.log("GTAG:", arguments)
+				dataLayer.push(arguments)
+			}
 		}
 
 		//run the optimize event...
-		const initDataLayer = async () => {
+		const initOptimize = async () => {
 			if (window.dataLayer) {
 				if (console) console.log("Activating optimize!")
 				await window.dataLayer.push({ event: "optimize.activate" });
+
+				window.dataLayer.push('event', 'optimize.callback', {
+					callback: () => {
+					 console.log("Optimize callback!", arguments);
+					}
+				 });
 			}
 		}
 
@@ -68,15 +78,7 @@ function Layout(props) {
 
 		router.events.on("routeChangeComplete", handleRouteChange);
 
-		//init the data laye for optimize
-		initDataLayer()
-
-		//catch any optimize events..
-		gtag('event', 'optimize.callback', {
-			callback: (combination, experimentId, containerId, x, y, z) => {
-			 console.log("Optimize callback!", experimentId, containerId, combination, x, y, z);
-			}
-		 });
+		initOptimize()
 
 		return () => {
 			if (typeof (window) === undefined) return
