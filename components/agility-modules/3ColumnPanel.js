@@ -4,8 +4,8 @@ import ThreeColSlider from "components/cards/ThreeColSlider"
 import React from 'react'
 import { load } from '@agility/content-sync'
 
-const ThreeColumnPanel =  ({customData, fields, page}) => {
-	const [variant, setVariant] = React.useState(-1)
+const ThreeColumnPanel = ({ customData, fields, page }) => {
+
 	const [cards, setCards] = React.useState([])
 
 	React.useEffect(() => {
@@ -17,9 +17,8 @@ const ThreeColumnPanel =  ({customData, fields, page}) => {
 				return
 			}
 
-			console.log("checking for experiments")
 			const variantIndex = window.google_optimize.get(customData.experimentID)
-	  		console.log({variantIndex})
+			console.log("Experiment Variant Index: ", { variantIndex })
 			if (variantIndex > 0) {
 				const filteredCards = customData.cards.filter(c => c.variant == variantIndex)
 				setCards(filteredCards)
@@ -34,12 +33,12 @@ const ThreeColumnPanel =  ({customData, fields, page}) => {
 
 
 	if (variant < 0) {
-		return <ThreeColSlider title={customData.title} cards={cards}  />
+		return <ThreeColSlider title={customData.title} cards={cards} />
 	}
 }
 
 
-ThreeColumnPanel.getCustomInitialProps = async function ({agility, item, channelName, languageCode}) {
+ThreeColumnPanel.getCustomInitialProps = async function ({ agility, item, channelName, languageCode }) {
 
 
 	try {
@@ -59,7 +58,7 @@ ThreeColumnPanel.getCustomInitialProps = async function ({agility, item, channel
 				title: c.fields.title,
 				regionTarget: c.fields.regionTarget,
 				description: c.fields.description,
-				imageSrc: `${c.fields.image.url}?w=400&h=400` ,
+				imageSrc: `${c.fields.image.url}?w=400&h=400`,
 				locationText: c.fields.tagDescription,
 				pricingText: c.fields.pricingText,
 				rating: c.fields.rating
