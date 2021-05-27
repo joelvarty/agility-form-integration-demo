@@ -96,6 +96,10 @@ const expandLinkedList = async ({ agility, contentItem, languageCode, fieldName,
 
 }
 
+const isBrowser = () => {
+
+	return (typeof window !== 'undefined')
+}
 
 
 module.exports = {
@@ -104,5 +108,6 @@ module.exports = {
 	asyncForEach,
 	expandContentItem,
 	expandContentList,
-	expandLinkedList
+	expandLinkedList,
+	 isBrowser
 }

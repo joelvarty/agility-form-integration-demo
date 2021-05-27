@@ -18,18 +18,22 @@ const TypeFormForm = ({ customData, fields, page}) => {
 	const formType= fields.formType || "embed"
 	const buttonText = fields.buttonText || "Start"
 
-
+console.log(url)
 	let typeFormPopup = null
 
 	useEffect(() => {
 
+		console.log(typeof window)
+
 		if (! isBrowser) return;
 
-		const loadForm = async () => {
 
+
+		const loadForm = async () => {
+console.log("Load form")
 			const typeformEmbed = (await import('@typeform/embed'))
 
-
+console.log({typeformEmbed})
 			const options = {
 				hideHeaders: true,
 				hideFooter: true,
